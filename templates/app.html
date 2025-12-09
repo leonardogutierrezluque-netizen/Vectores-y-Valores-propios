@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Algebra Lineal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Capa oscura para que el texto se lea bien sobre tu imagen de fondo */
+        .bg-overlay {
+            background: rgba(15, 23, 42, 0.85);
+            /* Azul oscuro semitransparente */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+
+<body
+    class="bg-cover bg-center bg-fixed text-white min-h-screen font-sans selection:bg-purple-500 selection:text-white p-6"
+    style="background-image: url('/static/fondo.jpg');">
+
+    <!-- Capa de oscurecimiento -->
+    <div class="bg-overlay"></div>
+
+    <div class="max-w-5xl mx-auto relative z-10">
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-5xl font-bold text-white mb-2 drop-shadow-lg">
+                Sistema Interactivo de Valores y Vectores Propios
+            </h1>
+            <p class="text-purple-200 text-lg font-light">Paso a Paso</p>
+        </header>
+
+        <!-- Navegación -->
+        <div class="flex justify-center gap-4 mb-10">
+            <button onclick="switchTab('entrada')" id="tab-entrada"
+                class="px-8 py-3 rounded-xl font-bold text-base uppercase tracking-wider bg-purple-600 text-white shadow-xl transition-all transform hover:-translate-y-1 hover:shadow-purple-500/40">
+                Entrada
+            </button>
+            <button onclick="switchTab('resultados')" id="tab-resultados"
+                class="px-8 py-3 rounded-xl font-bold text-base uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition-all backdrop-blur-md"
+                disabled>
+                Resultados
+            </button>
+            <button onclick="switchTab('pasos')" id="tab-pasos"
+                class="px-8 py-3 rounded-xl font-bold text-base uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition-all backdrop-blur-md"
+                disabled>
+                Paso a Paso
+            </button>
+        </div>
+        <!--
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        -->
+        <!-- PESTAÑA 1: ENTRADA (DISEÑO GIGANTE Y CENTRADO) -->
+        <div id="view-entrada" class="view-section animate-fade-in space-y-8 max-w-3xl mx-auto">
+
+            <!-- Card 1: Tamaño -->
+            <div
+                class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-6 border-l-4 border-purple-500 shadow-2xl flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Tamaño de Matriz</h2>
+                <span
+                    class="px-6 py-2 rounded-lg font-bold bg-purple-600/20 text-purple-300 border border-purple-500/50 shadow-inner">
+                    2x2
+                </span>
+            </div>
+
+            <!-- Card 2: Matriz A (GIGANTE) -->
+            <div
+                class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-10 border-l-4 border-purple-500 shadow-2xl text-center">
+                <h2 class="text-2xl font-bold text-white mb-8 border-b border-slate-700 pb-4">Ingrese la Matriz A</h2>
+
+                <div class="flex items-center justify-center gap-8">
+                    <span class="text-7xl text-slate-400 font-light select-none italic font-serif">A =</span>
+
+                    <!-- Grid de Inputs GIGANTES -->
+                    <div class="grid grid-cols-2 gap-4 p-6 bg-slate-900/50 rounded-2xl border border-slate-600">
+                        <input type="number" id="a"
+                            class="w-32 h-32 text-center text-5xl font-bold bg-slate-800 text-white rounded-xl border-2 border-slate-600 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-600/30 transition-all shadow-inner"
+                            value="4">
+                        <input type="number" id="b"
+                            class="w-32 h-32 text-center text-5xl font-bold bg-slate-800 text-white rounded-xl border-2 border-slate-600 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-600/30 transition-all shadow-inner"
+                            value="2">
+                        <input type="number" id="c"
+                            class="w-32 h-32 text-center text-5xl font-bold bg-slate-800 text-white rounded-xl border-2 border-slate-600 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-600/30 transition-all shadow-inner"
+                            value="3">
+                        <input type="number" id="d"
+                            class="w-32 h-32 text-center text-5xl font-bold bg-slate-800 text-white rounded-xl border-2 border-slate-600 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-600/30 transition-all shadow-inner"
+                            value="3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Ejemplos -->
+            <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-6 border-l-4 border-purple-500 shadow-2xl">
+                <h2 class="text-lg font-bold text-white mb-4">Ejemplos</h2>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="cargarEjemplo(1, 6, 5, 2)"
+                        class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600 hover:text-white transition border border-slate-600 hover:border-purple-400 font-mono text-sm">Ej
+                        1: (1,6,5,2)</button>
+                    <button onclick="cargarEjemplo(4, 2, 3, 3)"
+                        class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600 hover:text-white transition border border-slate-600 hover:border-purple-400 font-mono text-sm">Ej
+                        2: (4,2,3,3)</button>
+                    <button onclick="cargarEjemplo(3, -2, 1, 0)"
+                        class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600 hover:text-white transition border border-slate-600 hover:border-purple-400 font-mono text-sm">Ej
+                        3: (3,-2,1,0)</button>
+                    <button onclick="cargarEjemplo(0, -1, 1, 0)"
+                        class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600 hover:text-white transition border border-slate-600 hover:border-purple-400 font-mono text-sm">Ej
+                        4: Rotación</button>
+                    <button onclick="cargarEjemplo(10, -18, 6, -11)"
+                        class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600 hover:text-white transition border border-slate-600 hover:border-purple-400 font-mono text-sm">Ej
+                        5: (10,-18...)</button>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex gap-4 pt-4">
+                <button onclick="calcular()"
+                    class="flex-1 flex items-center justify-center gap-3 px-8 py-5 bg-green-900 hover:bg-green-400 text-white rounded-xl font-bold text-xl shadow-lg shadow-green-900/50 transition-all hover:scale-[1.02] active:scale-95">
+                    <i data-lucide="play" class="fill-current w-6 h-6"></i> CALCULAR AHORA
+                </button>
+                <button onclick="limpiar()"
+                    class="flex items-center gap-2 px-8 py-5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl font-bold transition-colors">
+                    <i data-lucide="trash-2" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+                <!--
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+ 
+        -->
+
+        <!-- PESTAÑA 2: RESULTADOS -->
+        <div id="view-resultados" class="view-section hidden animate-fade-in space-y-6 max-w-4xl mx-auto">
+            <div id="error-box"
+                class="hidden bg-red-900/80 backdrop-blur rounded-lg p-8 border-l-8 border-red-500 text-center shadow-xl">
+            </div>
+
+            <div id="success-content" class="space-y-6">
+                <!-- Resultados Lambda -->
+                <div class="bg-slate-800/90 backdrop-blur rounded-lg border border-slate-700 shadow-xl overflow-hidden">
+                    <div class="bg-slate-900/80 px-6 py-4 border-b border-green-500 border-b-2">
+                        <h2 class="text-xl font-bold text-white">Valores Propios (λ)</h2>
+                    </div>
+                    <div id="res-lambdas" class="p-6 grid gap-4"></div>
+                </div>
+
+                <!-- Resultados Vectores -->
+                <div class="bg-slate-800/90 backdrop-blur rounded-lg border border-slate-700 shadow-xl overflow-hidden">
+                    <div class="bg-slate-900/80 px-6 py-4 border-b border-blue-500 border-b-2">
+                        <h2 class="text-xl font-bold text-white">Vectores Propios</h2>
+                    </div>
+                    <div id="res-vectores" class="p-6 grid gap-4"></div>
+                </div>
+            </div>
+        </div>
+                <!--
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+
+        -->
+        <!-- PESTAÑA 3: PASO A PASO (Estructura Stacked de Fases) -->
+        <div id="view-pasos" class="view-section hidden animate-fade-in space-y-10 max-w-5xl mx-auto">
+
+            <!-- FASE 1: Borde Amarillo -->
+            <div class="border-2 border-yellow-500 rounded-xl bg-slate-800/90 backdrop-blur shadow-2xl overflow-hidden">
+                <div class="bg-slate-900/90 p-5 border-b border-yellow-500">
+                    <h2 class="text-2xl font-bold text-yellow-400">Hallar los Valores Propios (λ)</h2>
+                </div>
+                <div id="pasos-fase1" class="p-8 space-y-6">
+                    <!-- JS inyectará los pasos aquí -->
+                </div>
+            </div>
+
+            <!-- FASE 2: Borde Rosa -->
+            <div class="border-2 border-pink-500 rounded-xl bg-slate-800/90 backdrop-blur shadow-2xl overflow-hidden">
+                <div class="bg-slate-900/90 p-5 border-b border-pink-500">
+                    <h2 class="text-2xl font-bold text-pink-400">Vectores Propios</h2>
+                </div>
+                <div id="pasos-fase2" class="p-8 space-y-8">
+                    <!-- JS inyectará las tarjetas de vectores aquí -->
+                </div>
+            </div>
+
+            <!-- FASE 3: Borde Verde -->
+            <div class="border-2 border-green-500 rounded-xl bg-slate-800/90 backdrop-blur shadow-2xl overflow-hidden">
+                <div class="bg-slate-900/90 p-5 border-b border-green-500 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-green-400">Visualización Gráfica</h2>
+                    <!-- Controles Zoom -->
+                    <div class="flex gap-2">
+                        <button onclick="zoomOut()"
+                            class="bg-slate-700 hover:bg-slate-600 text-white w-10 h-10 flex items-center justify-center rounded-lg transition border border-slate-600"><i
+                                data-lucide="minus" class="w-5 h-5"></i></button>
+                        <button onclick="zoomIn()"
+                            class="bg-slate-700 hover:bg-slate-600 text-white w-10 h-10 flex items-center justify-center rounded-lg transition border border-slate-600"><i
+                                data-lucide="plus" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-6 flex flex-col items-center">
+                    <div id="grafico-container"
+                        class="w-full h-[500px] flex items-center justify-center relative overflow-hidden bg-[#0b1120] rounded-lg border border-slate-800 shadow-inner">
+                        <!-- SVG inyectado aquí -->
+                    </div>
+                    <!-- Leyenda -->
+                    <div id="grafico-leyenda" class="mt-6 w-full flex flex-wrap gap-4 justify-center"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/main.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
